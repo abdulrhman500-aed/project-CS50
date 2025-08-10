@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clinics & Appointments</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h1>Clinics & Appointments</h1>
+      <div>
+        <span id="welcome" class="small"></span>
+        &nbsp;|&nbsp;
+        <a href="bookings.html" class="link">View My Bookings</a>
+        &nbsp;|&nbsp;
+        <a href="login.html" class="link" id="logout">Logout</a>
+      </div>
+    </div>
+    <div class="card">
+      <div class="form-row">
+        <input id="searchInput" placeholder="Search by clinic, doctor, or day">
+      </div>
+      <div class="form-row flex">
+        <select id="clinicFilter">
+          <option value="">All Clinics</option>
+        </select>
+        <select id="dayFilter">
+          <option value="">All Days</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+        </select>
+        <button id="addApptBtn">Add New Appointment</button>
+      </div>
+    </div>
+    <div id="clinicsList"></div>
+  </div>
+  <script src="clinics.js"></script>
+</body>
+</html>

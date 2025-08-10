@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Create New Account</h1>
+    <form id="registerForm" class="card">
+      <div class="form-row">
+        <label>Username</label>
+        <input type="text" id="new_username" required placeholder="Enter username">
+
+        <label>Password</label>
+        <input type="password" id="new_password" required placeholder="Enter password">
+
+        <button type="submit">Register</button>
+      </div>
+      <p class="small">Already have an account? <a class="link" href="login.html">Login</a></p>
+    </form>
+  </div>
+  <script>
+    document.getElementById('registerForm').addEventListener('submit', function(e){
+      e.preventDefault();
+      const u = document.getElementById('new_username');
+      const p = document.getElementById('new_password');
+      if(!u || !p) { alert('Please fill all fields'); return; }
+      localStorage.setItem('username', u);
+      localStorage.setItem('password', p);
+      alert('Account created successfully. You can now login.');
+      window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

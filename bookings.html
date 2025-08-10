@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Bookings</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h1>My Bookings</h1>
+      <div>
+        <a href="clinics.html" class="link">← Back to Clinics</a>
+      </div>
+    </div>
+    <div class="form-row">
+      <button class="danger" onclick="deleteAllBookings()">Delete All Bookings</button>
+    </div>
+    <div id="bookingsList"></div>
+  </div>
+  <script>
+    const clinicsData = JSON.parse(localStorage.getItem('clinicsData')) || null;
+    const bookingsList = document.getElementById('bookingsList');
+    const bookings = JSON.parse(localStorage.getItem('bookings') || '[]');
+
+    function renderBookings(){
+      bookingsList.innerHTML = '';
+      if(bookings.length === 0){
+        bookingsList.innerHTML = '<p>No bookings found.</p>';
+        return;
+      }
+      bookings.forEach((b, index) => {
+        const clinicName = getClinicName(b.clinicId);
+        const doctorName = getDoctorName(b.clinicId, b.doctorId);
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <h3>#${index + 1} — ${b.patientName} (${b.gender}, ${b.age} years)</h3>
+          <p><strong>Booked by:</strong> ${b.bookedBy}</p>
+          <p><strong>Clinic:</strong> ${clinicName}</p>
+          <p><strong>Doctor:</strong> ${doctorName}</p>
+          <p><strong>Day & Time:</strong> ${b.day} — ${b.time}</p>
+          <p class="small">Booking date: ${new Date(b.created).toLocaleString()}</p>
+          <button onclick="deleteBooking(${index})">Delete</button>
+        `;
+        bookingsList.appendChild(card);
+      });
+    }
+
+    function getClinicName(id){
+      if(!clinicsData) return `Clinic ID ${id}`;
+      const clinic = clinicsData.find(c => c.id === id);
+      return clinic ? clinic.name : `Clinic ID ${id}`;
+    }
+
+    function getDoctorName(clinicId, doctorId){
+      if(!clinicsData) return `Doctor ID ${doctorId}`;
+      const clinic = clinicsData.find(c => c.id === clinicId);
+      if(!clinic) return `Doctor ID ${doctorId}`;
+      const doc = clinic.doctors.find(d => d.id === doctorId);
+      return doc ? doc.name : `Doctor ID ${doctorId}`;
+    }
+
+    function deleteBooking(index){
+      if(confirm('Are you sure you want to delete this booking?')){
+        bookings.splice(index, 1);
+        localStorage.setItem('bookings', JSON.stringify(bookings));
+        renderBookings();
+      }
+    }
+
+    function deleteAllBookings(){
+      if(confirm('Are you sure you want to delete ALL bookings?')){
+        localStorage.removeItem('bookings');
+        bookings.length = 0;
+        renderBookings();
+      }
+    }
+
+    renderBookings();
+  </script>
+</body>
+</html>
